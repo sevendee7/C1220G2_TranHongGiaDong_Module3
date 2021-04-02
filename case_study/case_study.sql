@@ -78,13 +78,13 @@ create table dich_vu_di_kem (
     trang_thai varchar(50)
 );
 
-insert into dich_vu_di_kem (ten_dich_vu)
+insert into dich_vu_di_kem (ten_dich_vu,gia,don_vi)
 values
-('Massage'),
-('Karaoke'),
-('Thức ăn'),
-('Nước uống'),
-('Thuê xe');
+('Massage',100,10),
+('Karaoke',200,20),
+('Thức ăn',300,30),
+('Nước uống',400,40),
+('Thuê xe',500,50);
 
 create table loai_khach (
 	id int primary key not null auto_increment,
@@ -101,17 +101,25 @@ values
 
 
 create table khach_hang (
-	id int primary key not null,
+	id int primary key not null auto_increment,
     ho_ten varchar(50),
     ngay_sinh date,
-    chung_minh_nhan_dan varchar(12),
+    cmnd varchar(12),
 	so_dien_thoai varchar(15),
     email varchar(30),
     dia_chi varchar(50),
     id_loai_khach int,
     
-    foreign key (id_loai_khach) references loai_khach (id)
+    foreign key (id_loai_khach) references loai_khach (id) on delete cascade
 );
+
+insert into khach_hang (ho_ten,ngay_sinh,cmnd,so_dien_thoai,email,dia_chi,id_loai_khach)	
+values
+('Nguyễn Thanh Công','1992/07/26','209132455','0123124121','tuitencong@gmail.com','Hà Nội',5),
+('Nguyễn Thanh Công','1992/07/26','209132459','0123124125','tuitencong1@gmail.com','Hà Nội',5),
+('Trần Quốc Tuấn','1996/07/17','209132473','0123124122','tuitentuan@gmail.com','Quảng Trị',4),
+('Nguyễn Đức Hậu','1998/08/25','209132413','0123124123','tuitenhaucoduc@gmail.com','Đà Nẵng',5),
+('Nguyễn Trung Kiên','2005/08/25','209132414','0123124124','tuitenkien@gmail.com','Đà Nẵng',1);
 
 create table kieu_thue (
 	id int primary key not null auto_increment,
@@ -148,16 +156,21 @@ create table dich_vu (
 	id_kieu_thue int,
     id_loai_dich_vu int,
     
-    foreign key (id_kieu_thue) references kieu_thue (id),
-    foreign key (id_loai_dich_vu) references loai_dich_vu (id)
+    foreign key (id_kieu_thue) references kieu_thue (id) on delete cascade,
+    foreign key (id_loai_dich_vu) references loai_dich_vu (id) on delete cascade
 );
 
 insert into dich_vu (ten_dich_vu,dien_tich,so_tang,so_nguoi_toi_da,chi_phi_thue,trang_thai,id_kieu_thue,id_loai_dich_vu)
 values
-('Villa tiêu chuẩn',77.5,1,4,700,
+('Beach villa',77.5,1,4,700,'Đã cho thuê',1,1),
+('Pool villa',70.5,2,8,1000,'trống',2,1),
+('Nest House', 83.5,1,4,500,'Đã cho thuê',3,2),
+('Sun House', 81.5,1,4,750,'trống',3,2),
+('King Room', 62.5,1,2,400,'trống',1,3),
+('Queen Room', 62.5,1,2,450,'Đã cho thuê',3,3);
 
 create table hop_dong (
-	id int primary key not null,
+	id int primary key not null auto_increment,
     ngay_lam_hop_dong date,
     ngay_ket_thuc date,
     tien_dat_coc int,
@@ -166,17 +179,30 @@ create table hop_dong (
     id_khach_hang int,
     id_dich_vu int,
     
-    foreign key (id_nhan_vien) references nhan_vien (id),
-    foreign key (id_khach_hang) references khach_hang (id),
-    foreign key (id_dich_vu) references dich_vu (id)
+    foreign key (id_nhan_vien) references nhan_vien (id) on delete cascade,
+    foreign key (id_khach_hang) references khach_hang (id) on delete cascade,
+    foreign key (id_dich_vu) references dich_vu (id) on delete cascade
 );
 
+insert into hop_dong (ngay_lam_hop_dong,ngay_ket_thuc,tien_dat_coc,tong_tien,id_nhan_vien,id_khach_hang,id_dich_vu)
+values
+('2018/01/01','2019/01/01',5000,50000,1,2,3),
+('2018/10/01','2018/10/01',7000,70000,2,1,2),
+('2019/02/01','2021/01/01',9000,90000,3,3,3),
+('2020/05/01','2021/01/01',9000,90000,4,1,4);
+
 create table hop_dong_chi_tiet (
-	id int primary key not null,
+	id int primary key not null auto_increment,
     id_dich_vu_di_kem int,
     id_hop_dong int,
     so_luong int,
     
-    foreign key (id_hop_dong) references hop_dong (id),
-    foreign key (id_dich_vu_di_kem) references dich_vu_di_kem (id)
+    foreign key (id_hop_dong) references hop_dong (id) on delete cascade,
+    foreign key (id_dich_vu_di_kem) references dich_vu_di_kem (id) on delete cascade
 );
+
+insert into hop_dong_chi_tiet (id_dich_vu_di_kem,id_hop_dong)
+values
+(1,2),
+(2,3),
+(3,1)
