@@ -42,7 +42,7 @@
             <a class="nav-link" href="http://localhost:8090/employees">Employee <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item active">
-            <a class="nav-link" href="#">Customer <span class="sr-only">(current)</span></a>
+            <a class="nav-link" href="http://localhost:8090/customers">Customer <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item active">
             <a class="nav-link" href="#">Service <span class="sr-only">(current)</span></a>

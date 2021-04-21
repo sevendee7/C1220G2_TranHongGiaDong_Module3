@@ -1,11 +1,11 @@
-<%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 <link rel="stylesheet" href="../bootstrap-4.6.0-dist/js/bootstrap.min.js">
 <link rel="stylesheet" href="../bootstrap-4.6.0-dist/css/bootstrap.min.css">
 <html>
 <head>
-    <title>List employee</title>
+    <title>List Customer</title>
 </head>
 <style>
     th {
@@ -17,9 +17,9 @@
     }
 </style>
 <body>
-<h2 style="text-align: center">Employee Management</h2>
+<h2 style="text-align: center">Customer Management</h2>
 <h6>
-    <a href="/employees?actionClient=create"><i class="fas fa-user-plus" style="font-size: 1.5rem">  Add New Employee</i></a>
+    <a href="/customers?actionClient=create"><i class="fas fa-user-plus" style="font-size: 1.5rem"> Add New Customer</i></a>
 </h6>
 <form class="form-inline my-2 my-lg-0">
     <input type="hidden" name="actionClient" value="searchByName" />
@@ -46,47 +46,54 @@
         <th>Id</th>
         <th>Name</th>
         <th>Date of birth</th>
+        <th>Gender</th>
         <th>ID Card</th>
-        <th>Salary</th>
         <th>Phone</th>
         <th>Email</th>
         <th>Address</th>
-        <th>Position</th>
-        <th>Education</th>
-        <th>Department</th>
-        <th>Username</th>
+        <th>Customer Type</th>
         <th colspan="2">Action</th>
     </tr>
     </thead>
     <tbody>
-    <c:forEach var="employee" items="${employeeListServlet}" varStatus="loop">
+    <c:forEach var="customer" items="${customerListServlet}" varStatus="loop">
+
         <tr>
             <td>${loop.index + 1}</td>
-            <td>${employee.id}</td>
-            <td>${employee.name}</td>
-            <td>${employee.dateOfBirth}</td>
-            <td>${employee.idCard}</td>
-            <td>${employee.salary}</td>
-            <td>${employee.phone}</td>
-            <td>${employee.email}</td>
-            <td>${employee.address}</td>
-            <td>${employee.positionName}</td>
-            <td>${employee.educationDegree}</td>
-            <td>${employee.departmentName}</td>
-            <td>${employee.userName}</td>
-            <td><a href="/employees?actionClient=update&id=${employee.id}">
+            <td>${customer.id}</td>
+            <td>${customer.name}</td>
+            <td>${customer.dateOfBirth}</td>
+            <td>
+                <c:if test="${customer.gender == true}">
+                    Male
+                </c:if>
+                <c:if test="${customer.gender == false}">
+                    Female
+                </c:if>
+            </td>
+            <td>${customer.idCard}</td>
+            <td>${customer.phone}</td>
+            <td>${customer.email}</td>
+            <td>${customer.address}</td>
+            <c:forEach var="customerType" items="${customerTypeServlet}">
+                <c:if test="${customerType.typeId == customer.typeId}">
+                    <td>${customerType.customerType}</td>
+                </c:if>
+            </c:forEach>
+            <td><a href="/customers?actionClient=update&id=${customer.id}">
                 <i class="far fa-edit" style="font-size: 1.5rem"></i>
             </a></td>
             <td>
-                <button type="button" class="btn btn-danger" onclick="sendIdToForm('${employee.id}','${employee.name}')" >
+                <button type="button" class="btn btn-danger"
+                        onclick="sendIdToForm('${customer.id}','${customer.name}')">
                     <i class="far fa-trash-alt"></i>
                 </button>
             </td>
         </tr>
+
     </c:forEach>
     </tbody>
 </table>
-<!-- Modal -->
 <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -97,7 +104,7 @@
                 </button>
             </div>
             <div class="modal-body">Do you want to delete <span id="nameDelete"></span>
-                <form action="/employees">
+                <form action="/customers">
                     <input type="hidden" name="actionClient" value="delete">
                     <input type="hidden" name="id" value="idDelete" id="idDelete">
                     <div class="modal-footer">

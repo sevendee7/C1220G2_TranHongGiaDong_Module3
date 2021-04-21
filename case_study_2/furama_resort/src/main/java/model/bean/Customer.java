@@ -3,21 +3,34 @@ package model.bean;
 public class Customer {
     private String id;
     private String name;
-    private String birthday;
-    private String gender;
+    private String dateOfBirth;
+    private boolean gender;
     private String idCard;
     private String phone;
     private String email;
     private String address;
     private Integer typeId;
+    private String customerType;
+
 
     public Customer() {
     }
 
-    public Customer(String name, String birthday, String gender, String idCard, String phone,
+    public Customer(String id, String name, String dateOfBirth, boolean gender, String idCard, String phone, String email, String address) {
+        this.id = id;
+        this.name = name;
+        this.dateOfBirth = dateOfBirth;
+        this.gender = gender;
+        this.idCard = idCard;
+        this.phone = phone;
+        this.email = email;
+        this.address = address;
+    }
+
+    public Customer(String name, String dateOfBirth, boolean gender, String idCard, String phone,
                     String email, String address, Integer typeId) {
         this.name = name;
-        this.birthday = birthday;
+        this.dateOfBirth = dateOfBirth;
         this.gender = gender;
         this.idCard = idCard;
         this.phone = phone;
@@ -26,17 +39,38 @@ public class Customer {
         this.typeId = typeId;
     }
 
-    public Customer(String id, String name, String birthday, String gender,
+    public Customer(String id, String name, String dateOfBirth, boolean gender,
                     String idCard, String phone, String email, String address, Integer typeId) {
         this.id = id;
         this.name = name;
-        this.birthday = birthday;
+        this.dateOfBirth = dateOfBirth;
         this.gender = gender;
         this.idCard = idCard;
         this.phone = phone;
         this.email = email;
         this.address = address;
         this.typeId = typeId;
+    }
+
+    public Customer(String id, String name, String dateOfBirth, boolean gender,
+                    String idCard, String phone, String email, String address, String customerType) {
+        this.id = id;
+        this.name = name;
+        this.dateOfBirth = dateOfBirth;
+        this.gender = gender;
+        this.idCard = idCard;
+        this.phone = phone;
+        this.email = email;
+        this.address = address;
+        this.customerType = customerType;
+    }
+
+    public String getCustomerType() {
+        return customerType;
+    }
+
+    public void setCustomerType(String customerType) {
+        this.customerType = customerType;
     }
 
     public String getId() {
@@ -55,19 +89,19 @@ public class Customer {
         this.name = name;
     }
 
-    public String getBirthday() {
-        return birthday;
+    public String getDateOfBirth() {
+        return dateOfBirth;
     }
 
-    public void setBirthday(String birthday) {
-        this.birthday = birthday;
+    public void setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
-    public String getGender() {
+    public boolean getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(boolean gender) {
         this.gender = gender;
     }
 
@@ -116,7 +150,7 @@ public class Customer {
         return "Customer{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
-                ", birthday='" + birthday + '\'' +
+                ", birthday='" + dateOfBirth + '\'' +
                 ", gender='" + gender + '\'' +
                 ", idCard='" + idCard + '\'' +
                 ", phone='" + phone + '\'' +

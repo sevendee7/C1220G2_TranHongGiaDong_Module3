@@ -11,7 +11,7 @@ position_name varchar(45)
 insert into position (position_name)
 values 
 ('Front Desk'),
-('Operation'),
+('Operator'),
 ('Captain'),
 ('Supervisor'),
 ('Manager'),

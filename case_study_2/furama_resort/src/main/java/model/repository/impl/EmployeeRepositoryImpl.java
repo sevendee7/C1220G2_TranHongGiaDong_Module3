@@ -1,8 +1,9 @@
 package model.repository.impl;
 
+import model.bean.Customer;
 import model.bean.Employee;
 import model.repository.BaseRepository;
-import model.repository.CRUDReopsitory;
+import model.repository.CRUDRepository;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,7 +12,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EmployeeRepositoryImpl implements CRUDReopsitory<Employee> {
+public class EmployeeRepositoryImpl implements CRUDRepository<Employee> {
 
     private BaseRepository baseRepository = new BaseRepository();
 
@@ -43,21 +44,6 @@ public class EmployeeRepositoryImpl implements CRUDReopsitory<Employee> {
                 employee.setEducationDegree(resultSet.getString(10));
                 employee.setDepartmentName(resultSet.getString(11));
                 employee.setUserName(resultSet.getString(12));
-//                String id = resultSet.getString(1);
-//                String name = resultSet.getString(2);
-//                String dateOfBirth = resultSet.getString(3);
-//                String idCard = resultSet.getString(4);
-//                Double salary = Double.parseDouble(resultSet.getString(5));
-//                String phone = resultSet.getString(6);
-//                String email = resultSet.getString(7);
-//                String address = resultSet.getString(8);
-//                String positionName = resultSet.getString(9);
-//                String educationDegree = resultSet.getString(10);
-//                String departmentName = resultSet.getString(11);
-//                String userName = resultSet.getString(12);
-
-//                employee = new Employee(id,name,dateOfBirth,idCard,salary,phone,email,address,positionName,educationDegree,departmentName,userName);
-
 
                 employeeList.add(employee);
             }
@@ -70,7 +56,7 @@ public class EmployeeRepositoryImpl implements CRUDReopsitory<Employee> {
     }
 
     @Override
-    public void insertEmployee(Employee employee) {
+    public void insertNewRecord(Employee employee) {
         try {
             PreparedStatement preparedStatement =
                     this.baseRepository.getConnection().prepareStatement("insert into employee (employee_name,employee_birthday,employee_id_card,employee_salary,employee_phone,employee_email,employee_address,position_id,education_degree_id,department_id,user_username)\n" +
@@ -87,7 +73,6 @@ public class EmployeeRepositoryImpl implements CRUDReopsitory<Employee> {
             preparedStatement.setInt(9, employee.getEducationId());
             preparedStatement.setInt(10, employee.getDepartmentId());
             preparedStatement.setString(11, employee.getUserName());
-            System.out.println(preparedStatement);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -169,15 +154,109 @@ public class EmployeeRepositoryImpl implements CRUDReopsitory<Employee> {
     }
 
     @Override
-    public List<Employee> searchByKeyword(String keywordJSP) {
+    public Customer findCustomerById(String id) {
+        return null;
+    }
+
+    @Override
+    public List<Employee> searchByName(String keywordJSP) {
         List<Employee> employeeList = new ArrayList<>();
 
         try {
             PreparedStatement preparedStatement =
-                    this.baseRepository.getConnection().prepareStatement("select *\n" +
-                            "from employee\n" +
-                            "where (employee.employee_name like ?\n" +
-                            "or employee.employee_name like ?);");
+                    this.baseRepository.getConnection().prepareStatement("select e.id, e.employee_name,e.employee_birthday,e.employee_id_card,e.employee_salary,e.employee_phone,e.employee_email,e.employee_address,p.position_name,edu.education_degree_name,d.department_name,e.user_username\n" +
+                            "from employee e\n" +
+                            "left join position p on e.position_id = p.id\n" +
+                            "left join education_degree edu on e.education_degree_id = edu.id\n" +
+                            "left join department d on e.department_id = d.id\n" +
+                            "where (e.employee_name like ?\n" +
+                            "or e.employee_name like ?);");
+            preparedStatement.setString(1,'%' + keywordJSP + '%');
+            preparedStatement.setString(2, keywordJSP + '%');
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            Employee employee = null;
+            while (resultSet.next()) {
+                employee = new Employee();
+                employee.setId(resultSet.getString(1));
+                employee.setName(resultSet.getString(2));
+                employee.setDateOfBirth(resultSet.getString(3));
+                employee.setIdCard(resultSet.getString(4));
+                employee.setSalary(Double.parseDouble(resultSet.getString(5)));
+                employee.setPhone(resultSet.getString(6));
+                employee.setEmail(resultSet.getString(7));
+                employee.setAddress(resultSet.getString(8));
+                employee.setPositionName(resultSet.getString(9));
+                employee.setEducationDegree(resultSet.getString(10));
+                employee.setDepartmentName(resultSet.getString(11));
+                employee.setUserName(resultSet.getString(12));
+
+                employeeList.add(employee);
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return employeeList;
+    }
+
+    @Override
+    public List<Employee> searchById(String keywordJSP) {
+        List<Employee> employeeList = new ArrayList<>();
+
+        try {
+            PreparedStatement preparedStatement =
+                    this.baseRepository.getConnection().prepareStatement("select e.id, e.employee_name,e.employee_birthday,e.employee_id_card,e.employee_salary,e.employee_phone,e.employee_email,e.employee_address,p.position_name,edu.education_degree_name,d.department_name,e.user_username\n" +
+                            "from employee e\n" +
+                            "left join position p on e.position_id = p.id\n" +
+                            "left join education_degree edu on e.education_degree_id = edu.id\n" +
+                            "left join department d on e.department_id = d.id\n" +
+                            "where e.id like ? or e.id like ?\n" +
+                            "order by e.employee_name;");
+            preparedStatement.setString(1,'%' + keywordJSP + '%');
+            preparedStatement.setString(2, keywordJSP + '%');
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            Employee employee = null;
+            while (resultSet.next()) {
+                employee = new Employee();
+                employee.setId(resultSet.getString(1));
+                employee.setName(resultSet.getString(2));
+                employee.setDateOfBirth(resultSet.getString(3));
+                employee.setIdCard(resultSet.getString(4));
+                employee.setSalary(Double.parseDouble(resultSet.getString(5)));
+                employee.setPhone(resultSet.getString(6));
+                employee.setEmail(resultSet.getString(7));
+                employee.setAddress(resultSet.getString(8));
+                employee.setPositionName(resultSet.getString(9));
+                employee.setEducationDegree(resultSet.getString(10));
+                employee.setDepartmentName(resultSet.getString(11));
+                employee.setUserName(resultSet.getString(12));
+
+                employeeList.add(employee);
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return employeeList;
+    }
+
+    @Override
+    public List<Employee> searchByEmail(String keywordJSP) {
+        List<Employee> employeeList = new ArrayList<>();
+
+        try {
+            PreparedStatement preparedStatement =
+                    this.baseRepository.getConnection().prepareStatement("select e.id, e.employee_name,e.employee_birthday,e.employee_id_card,e.employee_salary,e.employee_phone,e.employee_email,e.employee_address,p.position_name,edu.education_degree_name,d.department_name,e.user_username\n" +
+                            "from employee e\n" +
+                            "left join position p on e.position_id = p.id\n" +
+                            "left join education_degree edu on e.education_degree_id = edu.id\n" +
+                            "left join department d on e.department_id = d.id\n" +
+                            "where (e.employee_email like ?\n" +
+                            "or e.employee_email like ?);");
             preparedStatement.setString(1,'%' + keywordJSP + '%');
             preparedStatement.setString(2, keywordJSP + '%');
             ResultSet resultSet = preparedStatement.executeQuery();

@@ -1,11 +1,10 @@
 package controller;
 
 import model.bean.Employee;
-import model.repository.CRUDReopsitory;
+import model.repository.CRUDRepository;
 import model.repository.impl.EmployeeRepositoryImpl;
 import model.service.CRUDService;
 import model.service.impl.EmployeeServiceImpl;
-import sun.net.www.content.text.Generic;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -21,7 +20,7 @@ import java.util.List;
 public class EmployeeServlet extends HttpServlet {
 
     private CRUDService<Employee> employeeService = new EmployeeServiceImpl();
-    private CRUDReopsitory<Employee> employeeRepository = new EmployeeRepositoryImpl();
+    private CRUDRepository<Employee> employeeRepository = new EmployeeRepositoryImpl();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String actionClient = request.getParameter("actionClient");
@@ -47,9 +46,9 @@ public class EmployeeServlet extends HttpServlet {
                 String phone = request.getParameter("phone");
                 String email = request.getParameter("email");
                 String address = request.getParameter("address");
-                Integer position = Integer.parseInt(request.getParameter("position"));
-                Integer education = Integer.parseInt(request.getParameter("education"));
-                Integer department = Integer.parseInt(request.getParameter("department"));
+                Integer position = Integer.parseInt(request.getParameter("positionId"));
+                Integer education = Integer.parseInt(request.getParameter("educationId"));
+                Integer department = Integer.parseInt(request.getParameter("departmentId"));
                 String userName = request.getParameter("userName");
 
                 Employee employee = new Employee(id,name, dateOfBirth, idCard,salary,phone,email,address,position,education,department,userName);
@@ -57,7 +56,10 @@ public class EmployeeServlet extends HttpServlet {
                 String msg = null;
                 if (this.employeeService.save(employee)) {
                     msg = "Update successfully!";
-                    loadList(request, response);
+
+                    request.setAttribute("msg", msg);
+                    request.setAttribute("employeeObj", employee);
+                    request.getRequestDispatcher("web/update_employee.jsp").forward(request, response);
                 } else {
                     msg = "Update failed!";
 
@@ -94,12 +96,30 @@ public class EmployeeServlet extends HttpServlet {
                     throwables.printStackTrace();
                 }
                 break;
-            case "search":
-                String keywordJSP = request.getParameter("keyword");
-                List<Employee> employeeList = this.employeeService.searchByKeyword(keywordJSP);
+            case "searchByName":
+                String keywordName = request.getParameter("keywordName");
+                List<Employee> nameSearchList = this.employeeService.searchByName(keywordName);
 
-                request.setAttribute("employeeListServlet", employeeList);
-                request.setAttribute("keywordJSP", keywordJSP);
+                request.setAttribute("employeeListServlet", nameSearchList);
+                request.setAttribute("keywordName", keywordName);
+                request.getRequestDispatcher("web/employee_list.jsp").forward(request, response);
+
+                break;
+            case "searchById":
+                String keywordId = request.getParameter("keywordId");
+                List<Employee> idSearchList = this.employeeService.searchById(keywordId);
+
+                request.setAttribute("employeeListServlet", idSearchList);
+                request.setAttribute("keywordId", keywordId);
+                request.getRequestDispatcher("web/employee_list.jsp").forward(request, response);
+
+                break;
+            case "searchByEmail":
+                String keywordEmail = request.getParameter("keywordEmail");
+                List<Employee> emailSearchList = this.employeeService.searchByEmail(keywordEmail);
+
+                request.setAttribute("employeeListServlet", emailSearchList);
+                request.setAttribute("keywordEmail", keywordEmail);
                 request.getRequestDispatcher("web/employee_list.jsp").forward(request, response);
 
                 break;
@@ -125,11 +145,11 @@ public class EmployeeServlet extends HttpServlet {
         Integer positionId = Integer.parseInt(request.getParameter("positionId"));
         Integer educationId = Integer.parseInt(request.getParameter("educationId"));
         Integer departmentId = Integer.parseInt(request.getParameter("departmentId"));
-        String userName = request.getParameter("userName");
+        String userName = request.getParameter("email");
 
         Employee newEmployee = new Employee(name, dateOfBirth, idCard, salary, phone, email, address, positionId, educationId,
                 departmentId, userName);
-        employeeRepository.insertEmployee(newEmployee);
+        employeeRepository.insertNewRecord(newEmployee);
         request.setAttribute("employeeListServlet", this.employeeService.findAll());
         RequestDispatcher dispatcher = request.getRequestDispatcher("web/employee_list.jsp");
         dispatcher.forward(request, response);
