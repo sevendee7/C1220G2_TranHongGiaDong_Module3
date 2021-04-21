@@ -159,7 +159,7 @@ public class EmployeeRepositoryImpl implements CRUDRepository<Employee> {
     }
 
     @Override
-    public List<Employee> searchByName(String keywordJSP) {
+    public List<Employee> searchByMultipleKeyword(String nameKeyword, String idKeyword, String emailKeyword) {
         List<Employee> employeeList = new ArrayList<>();
 
         try {
@@ -169,96 +169,16 @@ public class EmployeeRepositoryImpl implements CRUDRepository<Employee> {
                             "left join position p on e.position_id = p.id\n" +
                             "left join education_degree edu on e.education_degree_id = edu.id\n" +
                             "left join department d on e.department_id = d.id\n" +
-                            "where (e.employee_name like ?\n" +
-                            "or e.employee_name like ?);");
-            preparedStatement.setString(1,'%' + keywordJSP + '%');
-            preparedStatement.setString(2, keywordJSP + '%');
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            Employee employee = null;
-            while (resultSet.next()) {
-                employee = new Employee();
-                employee.setId(resultSet.getString(1));
-                employee.setName(resultSet.getString(2));
-                employee.setDateOfBirth(resultSet.getString(3));
-                employee.setIdCard(resultSet.getString(4));
-                employee.setSalary(Double.parseDouble(resultSet.getString(5)));
-                employee.setPhone(resultSet.getString(6));
-                employee.setEmail(resultSet.getString(7));
-                employee.setAddress(resultSet.getString(8));
-                employee.setPositionName(resultSet.getString(9));
-                employee.setEducationDegree(resultSet.getString(10));
-                employee.setDepartmentName(resultSet.getString(11));
-                employee.setUserName(resultSet.getString(12));
-
-                employeeList.add(employee);
-            }
-
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-
-        return employeeList;
-    }
-
-    @Override
-    public List<Employee> searchById(String keywordJSP) {
-        List<Employee> employeeList = new ArrayList<>();
-
-        try {
-            PreparedStatement preparedStatement =
-                    this.baseRepository.getConnection().prepareStatement("select e.id, e.employee_name,e.employee_birthday,e.employee_id_card,e.employee_salary,e.employee_phone,e.employee_email,e.employee_address,p.position_name,edu.education_degree_name,d.department_name,e.user_username\n" +
-                            "from employee e\n" +
-                            "left join position p on e.position_id = p.id\n" +
-                            "left join education_degree edu on e.education_degree_id = edu.id\n" +
-                            "left join department d on e.department_id = d.id\n" +
-                            "where e.id like ? or e.id like ?\n" +
-                            "order by e.employee_name;");
-            preparedStatement.setString(1,'%' + keywordJSP + '%');
-            preparedStatement.setString(2, keywordJSP + '%');
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            Employee employee = null;
-            while (resultSet.next()) {
-                employee = new Employee();
-                employee.setId(resultSet.getString(1));
-                employee.setName(resultSet.getString(2));
-                employee.setDateOfBirth(resultSet.getString(3));
-                employee.setIdCard(resultSet.getString(4));
-                employee.setSalary(Double.parseDouble(resultSet.getString(5)));
-                employee.setPhone(resultSet.getString(6));
-                employee.setEmail(resultSet.getString(7));
-                employee.setAddress(resultSet.getString(8));
-                employee.setPositionName(resultSet.getString(9));
-                employee.setEducationDegree(resultSet.getString(10));
-                employee.setDepartmentName(resultSet.getString(11));
-                employee.setUserName(resultSet.getString(12));
-
-                employeeList.add(employee);
-            }
-
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-
-        return employeeList;
-    }
-
-    @Override
-    public List<Employee> searchByEmail(String keywordJSP) {
-        List<Employee> employeeList = new ArrayList<>();
-
-        try {
-            PreparedStatement preparedStatement =
-                    this.baseRepository.getConnection().prepareStatement("select e.id, e.employee_name,e.employee_birthday,e.employee_id_card,e.employee_salary,e.employee_phone,e.employee_email,e.employee_address,p.position_name,edu.education_degree_name,d.department_name,e.user_username\n" +
-                            "from employee e\n" +
-                            "left join position p on e.position_id = p.id\n" +
-                            "left join education_degree edu on e.education_degree_id = edu.id\n" +
-                            "left join department d on e.department_id = d.id\n" +
-                            "where (e.employee_email like ?\n" +
-                            "or e.employee_email like ?);");
-            preparedStatement.setString(1,'%' + keywordJSP + '%');
-            preparedStatement.setString(2, keywordJSP + '%');
+                            "where (e.employee_name like ? or e.employee_name like ?)\n" +
+                            "and (e.id like ? or e.id like ?)\n" +
+                            "and (e.employee_email like ? or e.employee_email like ?)\n" +
+                            "order by employee_name;");
+            preparedStatement.setString(1,'%' + nameKeyword + '%');
+            preparedStatement.setString(2, nameKeyword + '%');
+            preparedStatement.setString(3,'%' + idKeyword + '%');
+            preparedStatement.setString(4, idKeyword + '%');
+            preparedStatement.setString(5,'%' + emailKeyword + '%');
+            preparedStatement.setString(6, emailKeyword + '%');
             ResultSet resultSet = preparedStatement.executeQuery();
 
             Employee employee = null;

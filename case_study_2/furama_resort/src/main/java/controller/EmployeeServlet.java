@@ -1,5 +1,6 @@
 package controller;
 
+import model.bean.Customer;
 import model.bean.Employee;
 import model.repository.CRUDRepository;
 import model.repository.impl.EmployeeRepositoryImpl;
@@ -96,29 +97,15 @@ public class EmployeeServlet extends HttpServlet {
                     throwables.printStackTrace();
                 }
                 break;
-            case "searchByName":
+            case "search":
                 String keywordName = request.getParameter("keywordName");
-                List<Employee> nameSearchList = this.employeeService.searchByName(keywordName);
+                String keywordId = request.getParameter("keywordId");
+                String keywordEmail = request.getParameter("keywordEmail");
+                List<Employee> nameSearchList = this.employeeService.searchByMultipleKeyword(keywordName,keywordId,keywordEmail);
 
                 request.setAttribute("employeeListServlet", nameSearchList);
                 request.setAttribute("keywordName", keywordName);
-                request.getRequestDispatcher("web/employee_list.jsp").forward(request, response);
-
-                break;
-            case "searchById":
-                String keywordId = request.getParameter("keywordId");
-                List<Employee> idSearchList = this.employeeService.searchById(keywordId);
-
-                request.setAttribute("employeeListServlet", idSearchList);
                 request.setAttribute("keywordId", keywordId);
-                request.getRequestDispatcher("web/employee_list.jsp").forward(request, response);
-
-                break;
-            case "searchByEmail":
-                String keywordEmail = request.getParameter("keywordEmail");
-                List<Employee> emailSearchList = this.employeeService.searchByEmail(keywordEmail);
-
-                request.setAttribute("employeeListServlet", emailSearchList);
                 request.setAttribute("keywordEmail", keywordEmail);
                 request.getRequestDispatcher("web/employee_list.jsp").forward(request, response);
 

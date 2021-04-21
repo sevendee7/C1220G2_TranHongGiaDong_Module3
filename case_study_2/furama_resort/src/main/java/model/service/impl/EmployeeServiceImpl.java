@@ -30,17 +30,8 @@ public class EmployeeServiceImpl implements CRUDService<Employee> {
     }
 
     @Override
-    public List<Employee> searchByName(String keywordJSP) {
-        return this.employeeRepository.searchByName(keywordJSP);
+    public List<Employee> searchByMultipleKeyword(String nameKeyword, String idKeyword, String emailKeyword) {
+        return employeeRepository.searchByMultipleKeyword(nameKeyword,idKeyword,emailKeyword);
     }
 
-    @Override
-    public List<Employee> searchById(String keywordJSP) {
-        return this.employeeRepository.searchById(keywordJSP);
-    }
-
-    @Override
-    public List<Employee> searchByEmail(String keywordJSP) {
-        return this.employeeRepository.searchByEmail(keywordJSP);
-    }
 }

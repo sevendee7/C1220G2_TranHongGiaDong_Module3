@@ -22,19 +22,9 @@
     <a href="/employees?actionClient=create"><i class="fas fa-user-plus" style="font-size: 1.5rem">  Add New Employee</i></a>
 </h6>
 <form class="form-inline my-2 my-lg-0">
-    <input type="hidden" name="actionClient" value="searchByName" />
+    <input type="hidden" name="actionClient" value="search" />
     <input class="form-control mr-sm-2" name="keywordName" value="${keywordName}" type="search" placeholder="Search by name" aria-label="Search">
-    <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
-</form>
-<br>
-<form class="form-inline my-2 my-lg-0">
-    <input type="hidden" name="actionClient" value="searchById" />
     <input class="form-control mr-sm-2" name="keywordId" value="${keywordId}" type="search" placeholder="Search by id" aria-label="Search">
-    <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
-</form>
-<br>
-<form class="form-inline my-2 my-lg-0">
-    <input type="hidden" name="actionClient" value="searchByEmail" />
     <input class="form-control mr-sm-2" name="keywordEmail" value="${keywordEmail}" type="search" placeholder="Search by email" aria-label="Search">
     <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
 </form>

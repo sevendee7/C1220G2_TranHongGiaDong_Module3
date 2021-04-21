@@ -91,32 +91,16 @@ public class CustomerServlet extends HttpServlet {
                     throwables.printStackTrace();
                 }
                 break;
-            case "searchByName":
+            case "search":
                 String keywordName = request.getParameter("keywordName");
-                List<Customer> nameSearchList = this.customerService.searchByName(keywordName);
+                String keywordId = request.getParameter("keywordId");
+                String keywordEmail = request.getParameter("keywordEmail");
+                List<Customer> nameSearchList = this.customerRepository.searchByMultipleKeyword(keywordName,keywordId,keywordEmail);
 
                 request.setAttribute("customerListServlet", nameSearchList);
                 request.setAttribute("customerTypeServlet", this.customerRepository.findAllCustomerType());
                 request.setAttribute("keywordName", keywordName);
-                request.getRequestDispatcher("web/customer_list.jsp").forward(request, response);
-
-                break;
-            case "searchById":
-                String keywordId = request.getParameter("keywordId");
-                List<Customer> idSearchList = this.customerService.searchById(keywordId);
-
-                request.setAttribute("customerListServlet", idSearchList);
-                request.setAttribute("customerTypeServlet", this.customerRepository.findAllCustomerType());
                 request.setAttribute("keywordId", keywordId);
-                request.getRequestDispatcher("web/customer_list.jsp").forward(request, response);
-
-                break;
-            case "searchByEmail":
-                String keywordEmail = request.getParameter("keywordEmail");
-                List<Customer> emailSearchList = this.customerService.searchByEmail(keywordEmail);
-
-                request.setAttribute("customerListServlet", emailSearchList);
-                request.setAttribute("customerTypeServlet", this.customerRepository.findAllCustomerType());
                 request.setAttribute("keywordEmail", keywordEmail);
                 request.getRequestDispatcher("web/customer_list.jsp").forward(request, response);
 

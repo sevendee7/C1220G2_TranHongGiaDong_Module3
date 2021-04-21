@@ -31,18 +31,8 @@ public class CustomerServiceImpl implements CRUDService<Customer> {
     }
 
     @Override
-    public List<Customer> searchByName(String keywordJSP) {
-        return customerRepository.searchByName(keywordJSP);
-    }
-
-    @Override
-    public List<Customer> searchById(String keywordJSP) {
-        return customerRepository.searchById(keywordJSP);
-    }
-
-    @Override
-    public List<Customer> searchByEmail(String keywordJSP) {
-        return customerRepository.searchByEmail(keywordJSP);
+    public List<Customer> searchByMultipleKeyword(String nameKeyword, String idKeyword, String emailKeyword) {
+        return customerRepository.searchByMultipleKeyword(nameKeyword,idKeyword,emailKeyword);
     }
 
 }

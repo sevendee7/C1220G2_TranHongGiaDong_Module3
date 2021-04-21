@@ -145,8 +145,7 @@ public class CustomerRepositoryImpl implements CRUDRepository<Customer> {
     }
 
     @Override
-    public List<Customer> searchByName(String keywordJSP) {
-
+    public List<Customer> searchByMultipleKeyword(String nameKeyword, String idKeyword, String emailKeyword) {
         List<Customer> customerList = new ArrayList<>();
 
         PreparedStatement preparedStatement;
@@ -155,90 +154,18 @@ public class CustomerRepositoryImpl implements CRUDRepository<Customer> {
             try {
                 preparedStatement = this.baseRepository.getConnection().prepareStatement("select c.id, c.customer_name,c.customer_birthday,c.customer_gender,c.customer_id_card,c.customer_phone,c.customer_email,c.customer_address,c.customer_type_id\n" +
                         "from customer c\n" +
-                        "where (customer_name like ?\n" +
-                        "or customer_name like ?);");
-                preparedStatement.setString(1, '%' + keywordJSP + '%');
-                preparedStatement.setString(2, keywordJSP + '%');
-                ResultSet resultSet = preparedStatement.executeQuery();
-
-                Customer customer = null;
-                while(resultSet.next()) {
-                    customer = new Customer();
-                    customer.setId(resultSet.getString(1));
-                    customer.setName(resultSet.getString(2));
-                    customer.setDateOfBirth(resultSet.getString(3));
-                    customer.setGender(Boolean.parseBoolean(resultSet.getString(4)));
-                    customer.setIdCard(resultSet.getString(5));
-                    customer.setPhone(resultSet.getString(6));
-                    customer.setEmail(resultSet.getString(7));
-                    customer.setAddress(resultSet.getString(8));
-                    customer.setTypeId(Integer.parseInt(resultSet.getString(9)));
-
-                    customerList.add(customer);
-                }
-
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-        }
-        return customerList;
-    }
-
-    @Override
-    public List<Customer> searchById(String keywordJSP) {
-
-        List<Customer> customerList = new ArrayList<>();
-
-        PreparedStatement preparedStatement;
-
-        {
-            try {
-                preparedStatement = this.baseRepository.getConnection().prepareStatement("select c.id, c.customer_name,c.customer_birthday,c.customer_gender,c.customer_id_card,c.customer_phone,c.customer_email,c.customer_address,c.customer_type_id\n" +
-                        "from customer c\n" +
-                        "where (id like ?\n" +
-                        "or id like ?);");
-                preparedStatement.setString(1, '%' + keywordJSP + '%');
-                preparedStatement.setString(2, keywordJSP + '%');
-                ResultSet resultSet = preparedStatement.executeQuery();
-
-                Customer customer = null;
-                while(resultSet.next()) {
-                    customer = new Customer();
-                    customer.setId(resultSet.getString(1));
-                    customer.setName(resultSet.getString(2));
-                    customer.setDateOfBirth(resultSet.getString(3));
-                    customer.setGender(Boolean.parseBoolean(resultSet.getString(4)));
-                    customer.setIdCard(resultSet.getString(5));
-                    customer.setPhone(resultSet.getString(6));
-                    customer.setEmail(resultSet.getString(7));
-                    customer.setAddress(resultSet.getString(8));
-                    customer.setTypeId(Integer.parseInt(resultSet.getString(9)));
-
-                    customerList.add(customer);
-                }
-
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-        }
-        return customerList;
-    }
-
-    @Override
-    public List<Customer> searchByEmail(String keywordJSP) {
-
-        List<Customer> customerList = new ArrayList<>();
-
-        PreparedStatement preparedStatement;
-
-        {
-            try {
-                preparedStatement = this.baseRepository.getConnection().prepareStatement("select c.id, c.customer_name,c.customer_birthday,c.customer_gender,c.customer_id_card,c.customer_phone,c.customer_email,c.customer_address,c.customer_type_id\n" +
-                        "from customer c\n" +
-                        "where (c.customer_email like ?\n" +
+                        "where (c.customer_name like ?\n" +
+                        "or c.customer_name like ?)\n" +
+                        "and (c.id like ?\n" +
+                        "or c.id like ?)\n" +
+                        "and ( c.customer_email like ?\n" +
                         "or c.customer_email like ?);");
-                preparedStatement.setString(1, '%' + keywordJSP + '%');
-                preparedStatement.setString(2, keywordJSP + '%');
+                preparedStatement.setString(1, '%' + nameKeyword + '%');
+                preparedStatement.setString(2, nameKeyword + '%');
+                preparedStatement.setString(3, '%' + idKeyword + '%');
+                preparedStatement.setString(4, idKeyword + '%');
+                preparedStatement.setString(5, '%' + emailKeyword + '%');
+                preparedStatement.setString(6, emailKeyword + '%');
                 ResultSet resultSet = preparedStatement.executeQuery();
 
                 Customer customer = null;

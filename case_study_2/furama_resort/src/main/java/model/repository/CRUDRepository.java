@@ -19,10 +19,6 @@ public interface CRUDRepository<E> {
 
     Customer findCustomerById(String id);
 
-    List<E> searchByName(String keywordJSP);
-
-    List<E> searchById(String keywordJSP);
-
-    List<E> searchByEmail(String keywordJSP);
+    List<E> searchByMultipleKeyword(String nameKeyword, String idKeyword, String emailKeyword);
 
 }
