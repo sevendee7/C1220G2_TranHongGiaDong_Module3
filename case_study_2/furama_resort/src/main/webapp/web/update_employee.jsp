@@ -17,7 +17,7 @@
 </c:if>
 <br>
 <form action="/employees" method="post">
-    <table style="border: 5px solid grey; margin: auto">
+    <table class="table table-striped" style="width: 30%; margin: auto;border: 1px solid black">
         <tr>
             <th>Name:</th>
             <td><input type="text" name="name" value="${employeeObj.name}"/></td>

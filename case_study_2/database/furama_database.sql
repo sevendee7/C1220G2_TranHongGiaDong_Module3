@@ -10,7 +10,7 @@ position_name varchar(45)
 );
 insert into position (position_name)
 values 
-('Front Desk'),
+('Receptionist'),
 ('Operator'),
 ('Captain'),
 ('Supervisor'),

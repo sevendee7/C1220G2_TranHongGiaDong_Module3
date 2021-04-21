@@ -13,8 +13,9 @@
 <c:if test="${msg.equals('Update failed!')}">
     <p style="color: red">${msg}</p>
 </c:if>
+<br>
 <form action="/customers" method="post">
-    <table style="margin: auto">
+    <table class="table table-striped" style="width: 30%; margin: auto;border: 1px solid black">
         <tr>
             <input type="hidden" name="id" value="${customerObj.id}"/>
         </tr>

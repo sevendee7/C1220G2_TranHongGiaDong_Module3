@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(name = "CustomerServlet", urlPatterns = "/customers")
@@ -118,7 +119,11 @@ public class CustomerServlet extends HttpServlet {
 
     private void insertCustomer(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
+        List<String> errors = new ArrayList<>();
         String id = request.getParameter("id");
+        if (!id.matches("^(KH)-\\d{4}$")) {
+            errors.add("Customer ID must follow format 'KH-XXXX' (X is number)");
+        }
         String name = request.getParameter("name");
         String dateOfBirth = request.getParameter("dateOfBirth");
         boolean gender = Boolean.parseBoolean(request.getParameter("gender"));
