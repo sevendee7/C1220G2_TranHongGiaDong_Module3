@@ -56,7 +56,7 @@ public class EmployeeRepositoryImpl implements CRUDRepository<Employee> {
     }
 
     @Override
-    public void insertNewRecord(Employee employee) {
+    public boolean insertNewRecord(Employee employee) {
         try {
             PreparedStatement preparedStatement =
                     this.baseRepository.getConnection().prepareStatement("insert into employee (employee_name,employee_birthday,employee_id_card,employee_salary,employee_phone,employee_email,employee_address,position_id,education_degree_id,department_id,user_username)\n" +
@@ -74,8 +74,10 @@ public class EmployeeRepositoryImpl implements CRUDRepository<Employee> {
             preparedStatement.setInt(10, employee.getDepartmentId());
             preparedStatement.setString(11, employee.getUserName());
             preparedStatement.executeUpdate();
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 

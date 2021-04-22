@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @WebServlet(name = "CustomerServlet", urlPatterns = "/customers")
 public class CustomerServlet extends HttpServlet {
@@ -119,11 +120,7 @@ public class CustomerServlet extends HttpServlet {
 
     private void insertCustomer(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
-        List<String> errors = new ArrayList<>();
         String id = request.getParameter("id");
-        if (!id.matches("^(KH)-\\d{4}$")) {
-            errors.add("Customer ID must follow format 'KH-XXXX' (X is number)");
-        }
         String name = request.getParameter("name");
         String dateOfBirth = request.getParameter("dateOfBirth");
         boolean gender = Boolean.parseBoolean(request.getParameter("gender"));
@@ -133,10 +130,30 @@ public class CustomerServlet extends HttpServlet {
         String address = request.getParameter("address");
         Integer typeId = Integer.parseInt(request.getParameter("customerType"));
         Customer newCustomer = new Customer(id, name, dateOfBirth, gender, idCard ,phone, email, address, typeId);
-        customerRepositoryImpl.insertNewRecord(newCustomer);
-        request.setAttribute("customerListServlet", this.customerService.findAll());
-        RequestDispatcher dispatcher = request.getRequestDispatcher("web/customer_list.jsp");
-        dispatcher.forward(request, response);
+        Map<String, String> mapError =customerService.insert(newCustomer);
+//        request.setAttribute("customerListServlet", this.customerService.findAll());
+//        request.setAttribute("customerTypeServlet", this.customerRepository.findAllCustomerType());
+        RequestDispatcher dispatcher = request.getRequestDispatcher("web/create_customer.jsp");
+        if(mapError.isEmpty()){
+            String result = "Successfully";
+            request.setAttribute("result",result);
+            request.setAttribute("customerListServlet", this.customerService.findAll());
+            request.setAttribute("customerTypeServlet", this.customerRepository.findAllCustomerType());
+            try {
+                dispatcher.forward(request,response);
+            } catch (ServletException | IOException e) {
+                e.printStackTrace();
+            }
+        }else {
+            request.setAttribute("mapError",mapError);
+            request.setAttribute("customerListServlet", this.customerService.findAll());
+            request.setAttribute("customerTypeServlet", this.customerRepository.findAllCustomerType());
+            try {
+                dispatcher.forward(request,response);
+            } catch (ServletException | IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void showNewForm(HttpServletRequest request, HttpServletResponse response)

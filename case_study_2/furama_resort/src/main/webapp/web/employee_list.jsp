@@ -3,6 +3,8 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 <link rel="stylesheet" href="../bootstrap-4.6.0-dist/js/bootstrap.min.js">
 <link rel="stylesheet" href="../bootstrap-4.6.0-dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="../bootstrap413/css/bootstrap.min.css"/>
+<link rel="stylesheet" href="../datatables/css/dataTables.bootstrap4.min.css"/>
 <html>
 <head>
     <title>List employee</title>
@@ -29,7 +31,7 @@
     <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
 </form>
 <br>
-<table class="table table-striped">
+<table id="EmployeeTable" class="table table-striped table-bordered bg-light text-black">
     <thead>
     <tr>
         <th>No</th>
@@ -45,7 +47,8 @@
         <th>Education</th>
         <th>Department</th>
         <th>Username</th>
-        <th colspan="2">Action</th>
+        <th>Edit</th>
+        <th>Delete</th>
     </tr>
     </thead>
     <tbody>
@@ -76,6 +79,9 @@
     </c:forEach>
     </tbody>
 </table>
+<table class="table table-striped">
+
+</table>
 <!-- Modal -->
 <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -101,6 +107,9 @@
 </div>
 <script src="../jquery-3.6.0.min.js"></script>
 <script src="../bootstrap-4.6.0-dist/js/bootstrap.min.js"></script>
+<script src="../datatables/js/jquery.dataTables.min.js"></script>
+<script src="../datatables/js/dataTables.bootstrap4.min.js"></script>
+<script src="../bootstrap413/js/bootstrap.min.js"></script>
 <script>
     function sendIdToForm(employeeId,employeeName) {
 
@@ -108,6 +117,14 @@
         document.getElementById("idDelete").value = employeeId;
         document.getElementById("nameDelete").innerText = employeeName;
     }
+
+    $(document).ready(function () {
+        $('#EmployeeTable').dataTable({
+            "dom": 'lrtip',
+            "lengthChange": false,
+            "pageLength": 5
+        });
+    });
 </script>
 </body>
 </html>

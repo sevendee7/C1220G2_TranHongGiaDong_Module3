@@ -6,6 +6,7 @@ import model.repository.impl.EmployeeRepositoryImpl;
 import model.service.CRUDService;
 
 import java.util.List;
+import java.util.Map;
 
 public class EmployeeServiceImpl implements CRUDService<Employee> {
 
@@ -22,6 +23,11 @@ public class EmployeeServiceImpl implements CRUDService<Employee> {
             return this.employeeRepository.save(employee);
         }
         return false;
+    }
+
+    @Override
+    public Map<String, String> insert(Employee employee) {
+        return null;
     }
 
     @Override

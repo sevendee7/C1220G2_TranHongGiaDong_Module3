@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <link rel="stylesheet" href="../bootstrap-4.6.0-dist/js/bootstrap.min.js">
 <link rel="stylesheet" href="../bootstrap-4.6.0-dist/css/bootstrap.min.css">
@@ -33,8 +34,14 @@
             </td>
             <td>
                 <select name="gender" id="gender">
-                    <option value="true">Male</option>
-                    <option value="false">Female</option>
+                    <c:if test="${customerObj.gender}">
+                        <option selected value="true">Male</option>
+                        <option value="false">Female</option>
+                    </c:if>
+                    <c:if test="${!customerObj.gender}">
+                        <option value="true">Male</option>
+                        <option selected value="false">Female</option>
+                    </c:if>
                 </select>
             </td>
         </tr>

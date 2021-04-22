@@ -4,33 +4,44 @@
 <link rel="stylesheet" href="../bootstrap-4.6.0-dist/css/bootstrap.min.css">
 <html>
 <head>
-    <title>Furama Management Application</title>
+    <title>Customer Management Application</title>
 </head>
 <body>
-<h1 style="text-align: center">Customer Management</h1>
+<h1 style="text-align: center">Add New Customer</h1>
 <h2 style="text-align: center">
     <a href="/customers?actionClient=">List All Customer</a>
 </h2>
-<h2 style="text-align: center">Add New Customer</h2>
+<br>
 <div>
+    <h2 style="text-align:center; color: darkblue">${result}</h2>
+    <h2 style="text-align:center; color: red">
+        <c:if test="${mapError.get('error') != null}"/>
+        <c:out value="${mapError.get('error')}"/>
+    </h2>
     <form method="post">
         <table border="1" cellpadding="5" style="border: 5px solid grey; margin: auto">
             <tr>
                 <th>Customer ID:</th>
                 <td>
                     <input type="text" name="id" id="customerId" size="45"/>
+                    <p style="color: red"><c:if test="${mapError.get('id') != null}"/>
+                        <c:out value="${mapError.get('id')}"/>
+                    </p>
                 </td>
             </tr>
             <tr>
                 <th>Name:</th>
                 <td>
                     <input type="text" name="name" id="name" size="45"/>
+                    <p style="color: red"><c:if test="${mapError.get('name') != null}"/>
+                        <c:out value="${mapError.get('name')}"/>
+                    </p>
                 </td>
             </tr>
             <tr>
                 <th>Date of Birth:</th>
                 <td>
-                    <input type="text" name="dateOfBirth" id="dateOfBirth" size="45"/>
+                    <input type="date" name="dateOfBirth" id="dateOfBirth" size="45"/>
                 </td>
             </tr>
             <tr>
@@ -48,24 +59,36 @@
                 <th>Id Card:</th>
                 <td>
                     <input type="text" name="idCard" id="idCard" size="15"/>
+                    <p style="color: red"><c:if test="${mapError.get('idCard') != null}"/>
+                        <c:out value="${mapError.get('idCard')}"/>
+                    </p>
                 </td>
             </tr>
             <tr>
                 <th>Phone:</th>
                 <td>
                     <input type="text" name="phone" id="phone" size="45"/>
+                    <p style="color: red"><c:if test="${mapError.get('phone') != null}"/>
+                        <c:out value="${mapError.get('phone')}"/>
+                    </p>
                 </td>
             </tr>
             <tr>
                 <th>Email:</th>
                 <td>
                     <input type="text" name="email" id="email" size="15"/>
+                    <p style="color: red"><c:if test="${mapError.get('email') != null}"/>
+                        <c:out value="${mapError.get('email')}"/>
+                    </p>
                 </td>
             </tr>
             <tr>
                 <th>Address:</th>
                 <td>
                     <input type="text" name="address" id="address" size="45"/>
+                    <p style="color: red"><c:if test="${mapError.get('address') != null}"/>
+                        <c:out value="${mapError.get('address')}"/>
+                    </p>
                 </td>
             </tr>
             <tr>

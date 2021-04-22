@@ -71,7 +71,7 @@ public class CustomerRepositoryImpl implements CRUDRepository<Customer> {
 
 
     @Override
-    public void insertNewRecord(Customer customer) {
+    public boolean insertNewRecord(Customer customer) {
         try {
             PreparedStatement preparedStatement =
                     baseRepository.getConnection().prepareStatement("insert into customer\n" +
@@ -87,8 +87,10 @@ public class CustomerRepositoryImpl implements CRUDRepository<Customer> {
             preparedStatement.setString(8, customer.getAddress());
             preparedStatement.setInt(9, customer.getTypeId());
             preparedStatement.executeUpdate();
+            return true;
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+            return false;
         }
     }
 

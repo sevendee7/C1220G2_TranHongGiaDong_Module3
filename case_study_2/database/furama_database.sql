@@ -87,14 +87,12 @@ username varchar(255) primary key,
 );
 insert into `user` 
 values
-('thgdong','123456'),
-('ndhau','123456'),
-('ldsang','123456'),
-('dvthang','123456'),
-('nhuy','123456'),
-('tqtuan','123456'),
-('ntcong','123456'),
-('pthau','123456');
+('gdong@furama.com','123456'),
+('ndhau@furama.com','123456'),
+('ldsang@furama.com','123456'),
+('dvthang@furama.com','123456'),
+('nhuy@furama.com','123456'),
+('tqtuan@furama.com','123456');
 
 create table `role` (
 id int primary key auto_increment,
@@ -117,14 +115,12 @@ user_username varchar(255),
 );
 insert into user_role (role_id, user_username)
 values
-(2,'thgdong'),
-(1,'ndhau'),
-(3,'ldsang'),
-(4,'dvthang'),
-(3,'nhuy'),
-(2,'tqtuan'),
-(2,'ntcong'),
-(1,'pthau');
+(2,'gdong@furama.com'),
+(1,'ndhau@furama.com'),
+(3,'ldsang@furama.com'),
+(4,'dvthang@furama.com'),
+(3,'nhuy@furama.com'),
+(2,'tqtuan@furama.com');
 
 create table employee (
 id int primary key auto_increment,
@@ -148,12 +144,12 @@ foreign key (user_username) references `user` (username) on delete cascade
 insert into employee (employee_name,employee_birthday,employee_id_card,employee_salary,employee_phone,employee_email,employee_address
 					,position_id,education_degree_id,department_id,user_username)
 values
-('Tran Hong Gia Dong', '1995-02-05', '123123121', 750, '090123121','gdong@furama.com','Da Nang', 4,3,2,'thgdong'),
-('Nguyen Duc Hau', '1996-04-02', '123123122', 500, '090123122','ndhau@furama.com','Da Nang', 3,3,3,'ndhau'),
-('Le Duc Sang', '1992-06-17', '123123123', 1000, '090123123','ldsang@furama.com','Da Nang', 5,3,4,'ldsang'),
-('Dinh Van Thang', '1992-07-16', '123123124', 1300, '090123124','dvthang@furama.com','Da Nang', 6,3,4,'dvthang'),
-('Nguyen Huy', '1991-07-17', '123123125', 1000, '090123125','nhuy@furama.com','Da Nang', 5,3,4,'nhuy'),
-('Tran Quoc Tuan', '1996-03-01', '123123126', 500, '090123126','tqtuan@furama.com','Quang Tri', 3,2,1,'tqtuan');
+('Tran Hong Gia Dong', '1995-02-05', '123123121', 750, '090123121','gdong@furama.com','Da Nang', 4,3,2,'gdong@furama.com'),
+('Nguyen Duc Hau', '1996-04-02', '123123122', 500, '090123122','ndhau@furama.com','Da Nang', 3,3,3,'ndhau@furama.com'),
+('Le Duc Sang', '1992-06-17', '123123123', 1000, '090123123','ldsang@furama.com','Da Nang', 5,3,4,'ldsang@furama.com'),
+('Dinh Van Thang', '1992-07-16', '123123124', 1300, '090123124','dvthang@furama.com','Da Nang', 6,3,4,'dvthang@furama.com'),
+('Nguyen Huy', '1991-07-17', '123123125', 1000, '090123125','nhuy@furama.com','Da Nang', 5,3,4,'nhuy@furama.com'),
+('Tran Quoc Tuan', '1996-03-01', '123123126', 500, '090123126','tqtuan@furama.com','Quang Tri', 3,2,1,'tqtuan@furama.com');
 delimiter //
 create trigger save_user_name
 before insert
@@ -165,6 +161,17 @@ begin
     if new.user_username is null then
 		set new.user_username = new.employee_email;
     end if;
+end;
+// delimiter ;
+
+delimiter //
+create trigger delete_user_name
+after delete
+on employee for each row
+begin
+	delete 
+    from `user` 
+    where username = old.employee_email;
 end;
 // delimiter ;
 

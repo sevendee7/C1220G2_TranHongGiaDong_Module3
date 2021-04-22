@@ -9,7 +9,7 @@ public interface CRUDRepository<E> {
 
     List<E> findAll();
 
-    void insertNewRecord(E e);
+    boolean insertNewRecord(E e);
 
     boolean delete(int id);
 
